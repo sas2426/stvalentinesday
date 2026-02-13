@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Google Kiss Flow</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: radial-gradient(circle at center, #1a0033, #000000);
+      color: #fff;
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+    }
+    #kissFlowCanvas {
+      display: block;
+    }
+    #message {
+      position: absolute;
+      top: 20px;
+      width: 100%;
+      font-size: 24px;
+      font-weight: bold;
+      text-shadow: 0 0 10px #ff66cc;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+  </style>
+</head>
+
+<body>
+<audio id="ambient" src="sounds/ambient.mp3" autoplay loop></audio>
+<audio id="heartbeat" src="sounds/heartbeat.mp3"></audio>
+  <canvas id="kissFlowCanvas"></canvas>
+  <div id="message">Google Kiss Flow: Transmitting Love...</div>
+  <script src="Kissflow1.js"></script>
+</body>
+</html>

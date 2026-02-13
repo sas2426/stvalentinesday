@@ -1,0 +1,22 @@
+The Moon goes through a cycle of eight distinct phases as it orbits Earth every 29.5 days. These phases aren't caused by Earth's shadow, but by the changing angle between the Sun, the Moon, and your eyes on Earth. 
+Current Lunar Phase
+As of February 10, 2026, the Moon is in the Waning Crescent phase. 
+Illumination: Approximately 39%.
+Next Milestone: The New Moon will occur on February 17, 2026, at 7:01 AM EST. 
+The 8 Phases in Order
+The lunar cycle is divided into four primary phases (moments in time) and four intermediate phases (spans of time): 
+New Moon: The Moon is between Earth and the Sun; its illuminated side faces away from us, making it invisible.
+Waxing Crescent: A thin silver sliver appearing on the right side (in the Northern Hemisphere) as the Moon begins to "grow".
+First Quarter: Half of the Moon's disk is illuminated. It is called a "quarter" because the Moon has completed 25% of its orbit.
+Waxing Gibbous: More than half is illuminated and continues to grow towards full.
+Full Moon: The Moon is on the opposite side of Earth from the Sun, revealing its entire day side.
+Waning Gibbous: The Moon begins to "shrink," with more than half still lit, but losing light on the right side.
+Third (Last) Quarter: Half of the Moon is lit again, but it’s the opposite half from the First Quarter.
+Waning Crescent: The final phase before the cycle restarts, appearing as a thin sliver on the left side before sunrise. 
+Quick Reference Table
+Phase 	Typical Visibility	Illumination
+New Moon	Invisible (up during day)	0%
+First Quarter	Noon to Midnight	50%
+Full Moon	Sunset to Sunrise	100%
+Third Quarter	Midnight to Noon	50%
+The NASA Moon Phase Simulator, or check the Old Farmer's Almanac Moon Calendar for specific moonrise and moonset times.

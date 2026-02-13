@@ -1,0 +1,26 @@
+Updated JavaScript: The "Gravity Well" (Black Hole) Effect
+To visualize this "Galactic Love" in your Google Kiss Flow animation, we can add a "Black Hole" effect that happens when you press your mouse or touch the screen.// Add this to your particle logic
+canvas.addEventListener('mousedown', (e) => {
+    // The "Black Hole Kiss" - Particles pull inward to transform
+    particles.forEach(p => {
+        let dx = e.clientX - p.x;
+        let dy = e.clientY - p.y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+        
+        if (distance < 300) {
+            // Strong gravitational pull
+            p.speedX += dx / 20; 
+            p.speedY += dy / 20;
+            p.size += 2; // "Gaining power" as it gets closer
+        }
+    });
+});
+
+canvas.addEventListener('mouseup', () => {
+    // The "White Hole Release" - Particles burst away transformed
+    particles.forEach(p => {
+        p.speedX *= -2; // Send them sailing away with "more power"
+        p.speedY *= -2;
+        p.size = Math.random() * 3 + 1; // Reset size but keep the velocity
+    });
+});
