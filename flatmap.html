@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mystery Valentine Cosmic Card</title>
+  <style>
+    body {
+      margin: 0;
+      background: radial-gradient(circle at center, #0b0b2b, #000000);
+      color: #fff;
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      overflow-y: scroll; /* allow vertical scroll */
+    }
+    .card {
+      max-width: 700px;
+      margin: 50px auto;
+      padding: 20px;
+      border: 3px solid #ff66cc;
+      border-radius: 15px;
+      background: rgba(0,0,0,0.85);
+      box-shadow: 0 0 25px #ff66cc;
+      position: relative;
+    }
+    h1 {
+      font-size: 2em;
+      margin-bottom: 10px;
+      text-shadow: 0 0 15px #ff66cc;
+    }
+    p {
+      font-size: 1.2em;
+      margin-bottom: 10px;
+    }
+    .flap {
+      width: 100%;
+      height: 300px;
+      background: linear-gradient(135deg, #660033, #990066);
+      border-radius: 10px;
+      cursor: pointer;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 3;
+      transition: transform 1s ease, opacity 1s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5em;
+      color: #fff;
+      text-shadow: 0 0 10px #ffccff;
+    }
+    .flap.open {
+      transform: translateY(-350px);
+      opacity: 0;
+    }
+    .hidden {
+      opacity: 0;
+      transition: opacity 1.5s ease;
+      margin-top: 20px;
+    }
+    .hidden.show {
+      opacity: 1;
+    }
+    .secret-message {
+      font-size: 1.2em;
+      color: #ffccff;
+      margin-bottom: 15px;
+      text-shadow: 0 0 10px #ff66cc;
+      animation: fadeInText 2s ease forwards;
+      white-space: pre-line;
+    }
+    @keyframes fadeInText {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .cosmic-container {
+      position: relative;
+      display: inline-block;
+      overflow: hidden;
+    }
+    .cosmic-image {
+      width: 100%;
+      max-width: 600px;
+      border-radius: 12px;
+      border: 2px solid #fff;
+      box-shadow: 0 0 20px #66ccff;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+    .cosmic-image.zoomed {
+      transform: scale(1.5); /* zoom effect */
+      cursor: zoom-out;
+    }
+    .footer {
+      margin-top: 15px;
+      font-style: italic;
+      color: #ffccff;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>💖 Mystery Valentine Cosmic Card 💫</h1>
+    <p>Click the flap to reveal the cosmic secret...</p>
+
+    <div class="flap" id="flap">✨ Click to Reveal ✨</div>
+
+    <div class="hidden" id="hiddenContent">
+      <div class="secret-message">
+🌌 Our love is written in the cosmos 🌌
+
+The Galactic Verse:
+The White Hole births the light, a shimmering cosmic start,
+Sending stars on journeys to the center of your heart.
+But The Black Hole holds more deeply, a gravity so grand,
+It takes the star and transforms it, like gold from common sand.
+One lets go to give us life, the other holds to change,
+A love that spans the infinite, beautiful and strange.
+May your love be like the galaxy—power, light, and flow,
+Holding tight to transform us, letting go to let us grow.
+      </div>
+
+      <div class="cosmic-container">
+        <img src="cosmiccouple.jpg" alt="Cosmic Valentine Image" class="cosmic-image" id="cosmicImage">
+      </div>
+    </div>
+
+    <div class="footer">💖 When the mystery lifts, the universe reveals love 💖</div>
+  </div>
+
+  <script>
+    const flap = document.getElementById("flap");
+    const hidden = document.getElementById("hiddenContent");
+    const cosmicImage = document.getElementById("cosmicImage");
+
+    flap.addEventListener("click", () => {
+      flap.classList.add("open");
+      setTimeout(() => {
+        hidden.classList.add("show");
+      }, 800);
+    });
+
+    // Zoom toggle on image click
+    cosmicImage.addEventListener("click", () => {
+      cosmicImage.classList.toggle("zoomed");
+    });
+  </script>
+</body>
+</html>

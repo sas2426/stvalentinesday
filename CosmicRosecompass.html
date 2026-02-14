@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Valentine Cosmic Compass Rose</title>
+  <style>
+    body {
+      margin: 0;
+      background: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    #compassCanvas {
+      display: block;
+      margin: auto;
+      border: 2px solid #ff66cc;
+    }
+    h1 {
+      margin: 20px;
+      text-shadow: 0 0 15px #ff66cc;
+    }
+  </style>
+</head>
+<body>
+  <h1>💖 Valentine Cosmic Compass Rose 💫</h1>
+  <canvas id="compassCanvas" width="600" height="600"></canvas>
+
+  <!-- Ambient cosmic soundtrack -->
+  <audio id="ambient" src="ambient.mp3" autoplay loop></audio>
+  <!-- Heartbeat sound -->
+  <audio id="heartbeat" src="heartbeat.mp3"></audio>
+
+  <script>
+    const canvas = document.getElementById("compassCanvas");
+    const ctx = canvas.getContext("2d");
+    let sparkle = 0;
+    let increasing = true;
+    let angle = 0;
+
+    // Particle stars
+    let stars = [];
+    for (let i = 0; i < 60; i++) {
+      stars.push({
+        radius: 220 + Math.random() * 60,
+        size: Math.random() * 2 + 1,
+        speed: 0.01 + Math.random() * 0.02,
+        angle: Math.random() * Math.PI * 2
+      });
+    }
+
+    // Falling petals
+    let petals = [];
+    function createPetal() {
+      petals.push({
+        x: Math.random() * canvas.width,
+        y: -20,
+        size: 10 + Math.random() * 10,
+        speedY: 1 + Math.random() * 2,
+        sway: Math.random() * 0.05,
+        angle: Math.random() * Math.PI * 2
+      });
+    }
+    setInterval(createPetal, 800);
+
+    // Background gradient animation
+    let gradientShift = 0;
+
+    function drawBackground() {
+      gradientShift += 0.005;
+      let gradient = ctx.createRadialGradient(300, 300, 50, 300, 300, 600);
+      gradient.addColorStop(0, `hsl(${(gradientShift*40)%360}, 80%, 60%)`);
+      gradient.addColorStop(1, "#000000");
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    // Rose flower
+    function drawRose(x, y, size, opacity) {
+      ctx.save();
+      ctx.globalAlpha = opacity;
+
+      ctx.fillStyle = "#ff3366";
+      ctx.beginPath();
+      ctx.arc(x, y, size, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = "#ff6699";
+      for (let i = 0; i < 6; i++) {
+        ctx.beginPath();
+        let angle = (Math.PI * 2 / 6) * i;
+        let px = x + Math.cos(angle) * size * 1.5;
+        let py = y + Math.sin(angle) * size * 1.5;
+        ctx.arc(px, py, size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.restore();
+    }
+
+    function drawCompass() {
+      drawBackground();
+
+      // Compass circle
+      ctx.beginPath();
+      ctx.arc(300, 300, 200, 0, Math.PI * 2);
+      ctx.strokeStyle = "#66ccff";
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      // Cardinal directions
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "24px Arial";
+      ctx.fillText("N", 290, 80);
+      ctx.fillText("E", 500, 310);
+      ctx.fillText("S", 295, 530);
+      ctx.fillText("W", 90, 310);
+
+      // Needle as North Star
+      ctx.save();
+      ctx.translate(300, 300);
+      ctx.rotate(angle);
+
+      let gradient = ctx.createRadialGradient(0, -180, 5, 0, -180, 30);
+      gradient.addColorStop(0, `rgba(255,255,200,${sparkle})`);
+      gradient.addColorStop(1, "rgba(255,255,200,0)");
+
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.arc(0, -180, 30, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = `rgba(255,255,255,${sparkle})`;
+      for (let i = 0; i < 4; i++) {
+        ctx.rotate(Math.PI / 2);
+        ctx.beginPath();
+        ctx.moveTo(0, -180);
+        ctx.lineTo(5, -160);
+        ctx.lineTo(-5, -160);
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      ctx.restore();
+
+      // Orbiting stars
+      stars.forEach(star => {
+        star.angle += star.speed;
+        let x = 300 + star.radius * Math.cos(star.angle);
+        let y = 300 + star.radius * Math.sin(star.angle);
+        ctx.fillStyle = "#ffffff";
+        ctx.beginPath();
+        ctx.arc(x, y, star.size, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // Rose flower near compass bottom
+      let roseOpacity = 0.5 + 0.5 * Math.sin(Date.now() / 500);
+      drawRose(300, 500, 20, roseOpacity);
+
+      // Trigger heartbeat when rose pulses strongly
+      if (roseOpacity > 0.95) {
+        document.getElementById("heartbeat").play();
+      }
+
+      // Falling petals (only outside compass circle)
+      petals.forEach((petal, index) => {
+        petal.y += petal.speedY;
+        petal.x += Math.sin(petal.angle) * 2;
+        petal.angle += petal.sway;
+
+        let dx = petal.x - 300;
+        let dy = petal.y - 300;
+        let distance = Math.sqrt(dx*dx + dy*dy);
+
+        if (distance > 210) { // only draw petals outside compass circle
+          ctx.fillStyle = "#ff66cc";
+          ctx.beginPath();
+          ctx.arc(petal.x, petal.y, petal.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        if (petal.y > canvas.height) {
+          petals.splice(index, 1);
+        }
+      });
+
+      // Sparkle animation
+      if (increasing) {
+        sparkle += 0.02;
+        if (sparkle >= 1) increasing = false;
+      } else {
+        sparkle -= 0.02;
+        if (sparkle <= 0.3) increasing = true;
+      }
+
+      requestAnimationFrame(drawCompass);
+    }
+
+    // Mouse movement controls rotation
+    document.addEventListener("mousemove", (e) => {
+      let dx = e.clientX - canvas.width / 2;
+      let dy = e.clientY - canvas.height / 2;
+      angle = Math.atan2(dy, dx);
+    });
+
+    // Mobile device orientation
+    window.addEventListener("deviceorientation", (event) => {
+      if (event.alpha !== null) {
+        angle = event.alpha * Math.PI / 180;
+      }
+    });
+
+    drawCompass();
+  </script>
+</body>
+</html>

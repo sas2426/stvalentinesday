@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>The Earthly Dance - Cosmic Valentine</title>
+  <style>
+    body {
+      margin: 0;
+      background: radial-gradient(circle at center, #0b0b2b, #000000);
+      color: #fff;
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+    }
+    .card {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      border: 3px solid #ff66cc;
+      border-radius: 15px;
+      background: rgba(0,0,0,0.7);
+      box-shadow: 0 0 25px #ff66cc;
+      position: relative;
+      overflow: hidden;
+    }
+    h1 {
+      font-size: 2em;
+      margin-bottom: 10px;
+      text-shadow: 0 0 15px #ff66cc;
+    }
+    p {
+      font-size: 1.2em;
+      margin-bottom: 20px;
+    }
+    .images {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .images img {
+      max-width: 350px;
+      border-radius: 10px;
+      border: 2px solid #fff;
+      box-shadow: 0 0 15px #66ccff;
+      opacity: 0;
+      animation: fadeInOut 8s infinite;
+    }
+    .images img:nth-child(2) {
+      animation-delay: 4s; /* stagger moon corona after aurora */
+    }
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: scale(0.95); }
+      20% { opacity: 1; transform: scale(1.05); }
+      50% { opacity: 1; transform: scale(1); }
+      80% { opacity: 0; transform: scale(0.95); }
+      100% { opacity: 0; }
+    }
+    .footer {
+      margin-top: 20px;
+      font-style: italic;
+      color: #ffccff;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🌌 The Earthly Dance 🌙</h1>
+    <p>An iridescent Valentine pop‑up of the Aurora Borealis and a Moon Corona — celebrating love under cosmic skies.Our rhythm is written in the lights and the tides.</p>
+    
+    <div class="images">
+      <!-- Replace with your real Aurora image -->
+      <img src="aurora.jpg" alt="Aurora Borealis glowing in the night sky">
+      
+      <!-- Replace with your real Moon Corona image -->
+      <img src="mooncorona.jpg" alt="Moon Corona with iridescent halo">
+    </div>
+
+    <div class="footer">
+      💖 May your Valentine’s Day shine as brightly as the aurora and glow as softly as the moon’s corona 💖
+    </div>
+  </div>
+</body>
+</html>
