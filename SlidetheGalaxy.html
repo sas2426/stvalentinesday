@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Slide the Galaxy - Love Basket</title>
+  <style>
+    body {
+      margin: 0;
+      background: radial-gradient(circle at center, #0b0b2b, #000000);
+      color: #fff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    h1 {
+      margin: 10px;
+      text-shadow: 0 0 15px #ff66cc;
+    }
+    #gameArea {
+      position: relative;
+      margin: 20px auto;
+      width: 400px;
+      height: 600px;
+      border: 3px solid #ff66cc;
+      border-radius: 12px;
+      background: rgba(0,0,0,0.8);
+      overflow: hidden;
+    }
+    #basket {
+      position: absolute;
+      bottom: 10px;
+      left: 160px;
+      width: 100px;
+      height: 60px;
+      background: url('chatgptlovebasket.png') no-repeat center/cover;
+      border-radius: 12px;
+      cursor: grab;
+    }
+    .star {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background: radial-gradient(circle, #fff, #ffccff);
+      border-radius: 50%;
+    }
+    #score {
+      font-size: 1.2em;
+      margin-top: 10px;
+      color: #66ffcc;
+    }
+    #controls {
+      margin: 15px;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 5px;
+      border: none;
+      border-radius: 8px;
+      background: #ff66cc;
+      color: #fff;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #ff99ff;
+    }
+    #message {
+      margin-top: 15px;
+      font-size: 1.2em;
+      color: #ffccff;
+      text-shadow: 0 0 10px #ff66cc;
+    }
+    /* Mobile arrow controls */
+    #mobileControls {
+      margin-top: 15px;
+    }
+    .arrowBtn {
+      padding: 15px;
+      margin: 5px;
+      font-size: 1.5em;
+      border-radius: 50%;
+      background: #ff66cc;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    .arrowBtn:hover {
+      background: #ff99ff;
+    }
+  </style>
+</head>
+<body>
+  <h1>💖 Slide the Galaxy - Love Basket 💖</h1>
+  <div id="score">Score: 0</div>
+  <div id="controls">
+    <button id="startBtn">Start Game</button>
+    <button id="endBtn">End Game</button>
+    <button id="musicBtn">Music On</button>
+  </div>
+  <div id="gameArea">
+    <div id="basket"></div>
+  </div>
+  <div id="message"></div>
+
+  <!-- Mobile arrow controls -->
+  <div id="mobileControls">
+    <button class="arrowBtn" id="leftBtn">⬅️</button>
+    <button class="arrowBtn" id="rightBtn">➡️</button>
+  </div>
+
+  <!-- Background music -->
+  <audio id="bgMusic" src="romantic.mp3" loop></audio>
+
+  <script>
+    const gameArea = document.getElementById("gameArea");
+    const basket = document.getElementById("basket");
+    const scoreDisplay = document.getElementById("score");
+    const startBtn = document.getElementById("startBtn");
+    const endBtn = document.getElementById("endBtn");
+    const musicBtn = document.getElementById("musicBtn");
+    const message = document.getElementById("message");
+    const leftBtn = document.getElementById("leftBtn");
+    const rightBtn = document.getElementById("rightBtn");
+    const bgMusic = document.getElementById("bgMusic");
+
+    let score = 0;
+    let missed = 0;
+    let gameInterval;
+    let gameActive = false;
+    let musicOn = false;
+
+    // Move basket with mouse/touch
+    function moveBasket(e) {
+      if (!gameActive) return;
+      let rect = gameArea.getBoundingClientRect();
+      let x = e.clientX || (e.touches && e.touches[0].clientX);
+      if (!x) return;
+      let newLeft = x - rect.left - basket.offsetWidth / 2;
+      if (newLeft < 0) newLeft = 0;
+      if (newLeft > gameArea.offsetWidth - basket.offsetWidth) {
+        newLeft = gameArea.offsetWidth - basket.offsetWidth;
+      }
+      basket.style.left = newLeft + "px";
+    }
+    gameArea.addEventListener("mousemove", moveBasket);
+    gameArea.addEventListener("touchmove", moveBasket);
+
+    // Keyboard arrows
+    document.addEventListener("keydown", (e) => {
+      let left = parseInt(basket.style.left || 160);
+      if (e.key === "ArrowLeft" && left > 0) {
+        basket.style.left = (left - 20) + "px";
+      }
+      if (e.key === "ArrowRight" && left < 300) {
+        basket.style.left = (left + 20) + "px";
+      }
+    });
+
+    // Mobile arrow buttons
+    leftBtn.addEventListener("click", () => {
+      let left = parseInt(basket.style.left || 160);
+      if (left > 0) basket.style.left = (left - 20) + "px";
+    });
+    rightBtn.addEventListener("click", () => {
+      let left = parseInt(basket.style.left || 160);
+      if (left < 300) basket.style.left = (left + 20) + "px";
+    });
+
+    // Create falling stars
+    function createStar() {
+      const star = document.createElement("div");
+      star.classList.add("star");
+      star.style.left = Math.floor(Math.random() * 370) + "px";
+      star.style.top = "0px";
+      gameArea.appendChild(star);
+
+      let fallInterval = setInterval(() => {
+        if (!gameActive) {
+          clearInterval(fallInterval);
+          if (star.parentNode) gameArea.removeChild(star);
+          return;
+        }
+        let top = parseInt(star.style.top);
+        if (top < 570) {
+          star.style.top = (top + 5) + "px";
+        } else {
+          clearInterval(fallInterval);
+          if (star.parentNode) gameArea.removeChild(star);
+          missed++;
+          if (missed >= 10) endGame();
+        }
+
+        // Collision detection
+        let basketRect = basket.getBoundingClientRect();
+        let starRect = star.getBoundingClientRect();
+        if (
+          basketRect.left < starRect.right &&
+          basketRect.right > starRect.left &&
+          basketRect.top < starRect.bottom &&
+          basketRect.bottom > starRect.top
+        ) {
+          score++;
+          scoreDisplay.textContent = "Score: " + score;
+          clearInterval(fallInterval);
+          if (star.parentNode) gameArea.removeChild(star);
+        }
+      }, 30);
+    }
+
+    // Start game
+    function startGame() {
+      score = 0;
+      missed = 0;
+      scoreDisplay.textContent = "Score: 0";
+      message.textContent = "";
+      gameActive = true;
+      gameInterval = setInterval(createStar, 1000);
+      if (musicOn) bgMusic.play();
+    }
+
+    // End game
+    function endGame() {
+      gameActive = false;
+      clearInterval(gameInterval);
+      bgMusic.pause();
+      bgMusic.currentTime = 0;
+      if (score < 5) {
+        message.textContent = "💖 A gentle start — keep catching stars together!";
+      } else if (score < 15) {
+        message.textContent = "🌌 Cosmic teamwork — your Love Basket shines!";
+      } else {
+        message.textContent = "✨ Stellar love — you two are unstoppable galaxies!";
+      }
+    }
+
+    // Music toggle
+    musicBtn.addEventListener("click", () => {
+      if (!musicOn) {
+        musicOn = true;
+        musicBtn.textContent = "Music Off";
+        if (gameActive) bgMusic.play();
+      } else {
+        musicOn = false;
+        musicBtn.textContent = "Music On";
+        bgMusic.pause();
+      }
+    });
+
+    startBtn.addEventListener("click", startGame);
+    endBtn.addEventListener("click", endGame);
+  </script>
+</body>
+</html>
